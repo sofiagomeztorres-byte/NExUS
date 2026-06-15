@@ -1,0 +1,232 @@
+{
+  "version": "1.0.0",
+  "name": "NExUS Welcome Screen Animation",
+  "description": "Sequential onboarding animation for NExUS welcome screen (3.5 seconds)",
+  "duration": 3500,
+  "frameRate": 60,
+  "viewBox": {
+    "width": 430,
+    "height": 932
+  },
+  "animations": [
+    {
+      "id": "progress-bar",
+      "element": "Progress Bar",
+      "type": "slideDown",
+      "startTime": 0,
+      "duration": 600,
+      "easing": "cubic-bezier(0.34, 1.56, 0.64, 1)",
+      "properties": {
+        "translateY": {
+          "from": -100,
+          "to": 0,
+          "unit": "%"
+        },
+        "opacity": {
+          "from": 0,
+          "to": 1
+        }
+      },
+      "position": {
+        "x": 0,
+        "y": 0,
+        "width": 430,
+        "height": 20
+      }
+    },
+    {
+      "id": "title",
+      "element": "Title: Bienvenida a NExUS",
+      "type": "fadeIn",
+      "startTime": 600,
+      "duration": 1000,
+      "easing": "ease-out",
+      "properties": {
+        "opacity": {
+          "from": 0,
+          "to": 1
+        },
+        "translateY": {
+          "from": -20,
+          "to": 0,
+          "unit": "px"
+        }
+      },
+      "position": {
+        "x": 16,
+        "y": 250,
+        "width": 398,
+        "height": 80
+      },
+      "style": {
+        "font": "Cormorant Garamond",
+        "fontSize": 28,
+        "fontWeight": "bold",
+        "color": "#2A1A4A",
+        "textAlign": "left"
+      }
+    },
+    {
+      "id": "description",
+      "element": "Description Text",
+      "type": "fadeIn",
+      "startTime": 1200,
+      "duration": 1200,
+      "easing": "ease-out",
+      "properties": {
+        "opacity": {
+          "from": 0,
+          "to": 1
+        },
+        "translateY": {
+          "from": 10,
+          "to": 0,
+          "unit": "px"
+        }
+      },
+      "position": {
+        "x": 16,
+        "y": 360,
+        "width": 398,
+        "height": 90
+      },
+      "style": {
+        "font": "Inter",
+        "fontSize": 16,
+        "fontWeight": "normal",
+        "color": "#2A1A4A",
+        "opacity": 0.7,
+        "lineHeight": 1.5
+      }
+    },
+    {
+      "id": "background-icons",
+      "element": "Background Icon Pattern",
+      "type": "fadeIn",
+      "startTime": 600,
+      "duration": 3000,
+      "easing": "ease-in-out",
+      "properties": {
+        "opacity": {
+          "from": 0.08,
+          "to": 0.15
+        }
+      },
+      "position": {
+        "x": 0,
+        "y": 200,
+        "width": 430,
+        "height": 500
+      },
+      "icons": [
+        {
+          "symbol": "📊",
+          "position": { "x": 32, "y": 80 },
+          "size": 48,
+          "opacity": "inherit"
+        },
+        {
+          "symbol": "🎯",
+          "position": { "x": 350, "y": 128 },
+          "size": 48,
+          "opacity": "inherit"
+        },
+        {
+          "symbol": "📈",
+          "position": { "x": 107, "y": 192 },
+          "size": 48,
+          "opacity": "inherit"
+        },
+        {
+          "symbol": "🔄",
+          "position": { "x": 290, "y": 256 },
+          "size": 48,
+          "opacity": "inherit"
+        },
+        {
+          "symbol": "📋",
+          "position": { "x": 48, "y": 352 },
+          "size": 48,
+          "opacity": "inherit"
+        },
+        {
+          "symbol": "✨",
+          "position": { "x": 334, "y": 304 },
+          "size": 48,
+          "opacity": "inherit"
+        },
+        {
+          "symbol": "🚀",
+          "position": { "x": 143, "y": 432 },
+          "size": 48,
+          "opacity": "inherit"
+        },
+        {
+          "symbol": "💡",
+          "position": { "x": 358, "y": 269 },
+          "size": 48,
+          "opacity": "inherit"
+        }
+      ]
+    },
+    {
+      "id": "button",
+      "element": "Call-to-Action Button",
+      "type": "slideUp",
+      "startTime": 2200,
+      "duration": 1000,
+      "easing": "cubic-bezier(0.34, 1.56, 0.64, 1)",
+      "properties": {
+        "translateY": {
+          "from": 60,
+          "to": 0,
+          "unit": "px"
+        },
+        "opacity": {
+          "from": 0,
+          "to": 1
+        }
+      },
+      "position": {
+        "x": 16,
+        "y": 800,
+        "width": 398,
+        "height": 56
+      },
+      "style": {
+        "backgroundColor": "#EADCF9",
+        "textColor": "#2A1A4A",
+        "font": "Inter",
+        "fontSize": 16,
+        "fontWeight": "bold",
+        "borderRadius": 8,
+        "text": "Comenzar"
+      }
+    }
+  ],
+  "timeline": {
+    "0ms": "Start - White background",
+    "600ms": "Progress bar visible, title starts fading in",
+    "1200ms": "Title visible, description starts fading in",
+    "1600ms": "Title fully visible",
+    "2200ms": "Button starts sliding up",
+    "2400ms": "Description fully visible",
+    "3200ms": "Button fully visible",
+    "3600ms": "Background icons fully faded to target opacity",
+    "3500ms": "Animation complete"
+  },
+  "colors": {
+    "background": "#FFFFFF",
+    "progressBar": "#EADCF9",
+    "titleText": "#2A1A4A",
+    "descriptionText": "#2A1A4A",
+    "buttonBg": "#EADCF9",
+    "buttonText": "#2A1A4A",
+    "iconColor": "#2A1A4A"
+  },
+  "easingFunctions": {
+    "elasticBounce": "cubic-bezier(0.34, 1.56, 0.64, 1)",
+    "easeOut": "ease-out",
+    "easeInOut": "ease-in-out"
+  }
+}

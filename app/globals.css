@@ -1,0 +1,626 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  background: #FFFFFF;
+  color: #2A1A4A;
+  font-family: 'Inter', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  max-width: 430px;
+  margin: 0 auto;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+}
+
+/* Silk Animation Motor */
+@keyframes silkIn {
+  0% {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes silkOut {
+  0% {
+    opacity: 1;
+    transform: scale(0.99);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+}
+
+@keyframes lightWave {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+/* Kinetic Haptic Feedback */
+button:active {
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.1));
+}
+
+/* ─── Brand CSS Variable Defaults (Light) ─────────────────────────── */
+:root {
+  --page-bg:        #FAFAFA;
+  --card-bg:        rgba(255,255,255,0.9);
+  --card-border:    #EEE9F5;
+  --card-shadow:    0 2px 8px rgba(0,0,0,0.02);
+  --surface-bg:     rgba(255,255,255,0.95);
+  --surface-border: #EEE9F5;
+  --input-bg:       #F9F8FC;
+  --input-border:   #EEE9F5;
+  --text-primary:   #2A1A4A;
+  --text-secondary: rgba(42,26,74,0.55);
+  --text-tertiary:  rgba(42,26,74,0.32);
+  --nav-bg:         rgba(255,255,255,0.96);
+  --nav-border:     rgba(214,188,250,0.2);
+  --divider:        rgba(42,26,74,0.08);
+  --brand-primary:  #6B3FA0;
+  --brand-secondary:#E2B659;
+  --brand-accent:   #E2B659;
+  --brand-success:  #22C55E;
+  --brand-warning:  #F59E0B;
+  --brand-priority: #EF4444;
+  --brand-font:     'Inter', sans-serif;
+  --brand-radius:   12px;
+}
+
+/* ─── Frosted Glass Cards — uses CSS vars ──────────────────────────── */
+.glass-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+}
+
+/* ─── Dark theme text overrides for Tailwind arbitrary classes ─────── */
+[data-brand-theme="dark"] {
+  color-scheme: dark;
+  color: var(--text-primary);
+}
+[data-brand-theme="dark"] .text-\[\#2A1A4A\] { color: var(--text-primary) !important; }
+[data-brand-theme="dark"] .bg-\[\#F9F8FC\]   { background: var(--input-bg) !important; }
+[data-brand-theme="dark"] .bg-\[\#FAFAFA\]   { background: var(--card-bg) !important; }
+[data-brand-theme="dark"] .border-\[\#EEE9F5\] { border-color: var(--card-border) !important; }
+
+/* Cream theme text override */
+[data-brand-theme="cream"] .text-\[\#2A1A4A\] { color: var(--text-primary) !important; }
+
+/* ─── All themes: apply font variable to body text ─────────────────── */
+[data-brand-theme] { font-family: var(--brand-font); }
+
+/* Liquid Gold Breathing */
+@keyframes breathe {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.gold-breathe {
+  animation: breathe 3s ease-in-out infinite;
+}
+
+/* Onboarding Welcome Screen Animations */
+
+/* Progress Bar - Slides down from top */
+@keyframes slideDownBar {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Title - Fade in after progress bar */
+@keyframes fadeInTitle {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Description Text - Fade in with slight delay */
+@keyframes fadeInDescription {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Background Icons - Gradient fade in (10% to full opacity) */
+@keyframes fadeInIcons {
+  0% {
+    opacity: 0.08;
+  }
+  100% {
+    opacity: 0.15;
+  }
+}
+
+/* Button - Slides up from bottom */
+@keyframes slideUpButton {
+  0% {
+    opacity: 0;
+    transform: translateY(60px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Animation Classes */
+.animate-progress-bar {
+  animation: slideDownBar 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.animate-title {
+  animation: fadeInTitle 1s ease-out 0.6s both;
+}
+
+.animate-description {
+  animation: fadeInDescription 1.2s ease-out 1.2s both;
+}
+
+.animate-icons {
+  animation: fadeInIcons 3s ease-in-out 0.6s both;
+}
+
+.animate-button {
+  animation: slideUpButton 1s cubic-bezier(0.34, 1.56, 0.64, 1) 2.2s both;
+}
+
+/* Background Icons Pattern */
+.welcome-icons-bg {
+  position: absolute;
+  inset: 0;
+  opacity: 0.08;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* ─── Name Screen: Orbit & Line Pulse Animations ─── */
+
+/* Orbital pulse — travels around the ellipse */
+@keyframes orbitPulse1 {
+  0%   { stroke-dashoffset: 890; }
+  100% { stroke-dashoffset: 0; }
+}
+@keyframes orbitPulse2 {
+  0%   { stroke-dashoffset: 580; }
+  100% { stroke-dashoffset: 0; }
+}
+
+/* Radial line pulses — each offset for stagger */
+@keyframes linePulse1 {
+  0%   { stroke-dashoffset: 102; }
+  100% { stroke-dashoffset: 0; }
+}
+@keyframes linePulse2 {
+  0%   { stroke-dashoffset: 122; }
+  100% { stroke-dashoffset: 0; }
+}
+@keyframes linePulse3 {
+  0%   { stroke-dashoffset: 90; }
+  100% { stroke-dashoffset: 0; }
+}
+@keyframes linePulse4 {
+  0%   { stroke-dashoffset: 117; }
+  100% { stroke-dashoffset: 0; }
+}
+
+/* Spark node pulse */
+@keyframes sparkPulse {
+  0%, 100% { r: 3px; opacity: 0.5; }
+  50%       { r: 5px; opacity: 1;   }
+}
+
+/* Spark ring expand */
+@keyframes sparkRing {
+  0%   { r: 4px; opacity: 0.6; }
+  80%  { r: 14px; opacity: 0;  }
+  100% { r: 14px; opacity: 0;  }
+}
+
+/* Input shimmer */
+@keyframes inputShimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+/* ─── Premium Icon Network Animations ─── */
+
+/* Icon Orbit Animation */
+@keyframes orbitIn {
+  0% {
+    opacity: 0;
+    transform: translate(0, 40px) scale(0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+/* Pulse Glow Animation */
+@keyframes pulse {
+  0%, 100% {
+    r: 32px;
+    opacity: 0.3;
+  }
+  50% {
+    r: 38px;
+    opacity: 0.15;
+  }
+}
+
+/* Spinning Ring Border */
+@keyframes spinRing {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Core Light Breathing */
+@keyframes coreGlow {
+  0%, 100% {
+    opacity: 0.3;
+    r: 120px;
+  }
+  50% {
+    opacity: 0.5;
+    r: 140px;
+  }
+}
+
+/* Floating Up Animation */
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) translateX(0);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-40px) translateX(20px);
+    opacity: 0;
+  }
+}
+
+/* Expanding Ring Animation */
+@keyframes expandRing {
+  0% {
+    r: 4px;
+    opacity: 0.6;
+  }
+  100% {
+    r: 15px;
+    opacity: 0;
+  }
+}
+
+/* Floating Micro Animation */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translateY(-15px) translateX(8px);
+    opacity: 1;
+  }
+}
+
+/* Dashing Line Animation */
+@keyframes dash {
+  0% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    stroke-dashoffset: 200;
+    opacity: 0;
+  }
+}
+
+/* Connection Line Animation */
+@keyframes drawLine {
+  0% {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+  }
+  100% {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Icon Node Stagger */
+.icon-node {
+  transform-origin: 215px 400px;
+}
+
+/* Premium Welcome Container */
+.premium-welcome-container {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #FFFFFF 0%, #F9F8FC 100%);
+}
+
+/* Glow effect for icon containers */
+.glow-circle {
+  filter: drop-shadow(0 0 12px rgba(226, 182, 89, 0.4));
+}
+
+/* ─── NExUS Logo DNA Design Tokens ─────────────────────────────────────────
+
+  GOLDEN NUCLEUS  #E2B659  → IA, prioridad, score, máximo valor
+  NODOS LAVANDA   #D6BCFA  → marcas, módulos, categorías, estados activos
+  ARCOS DORADOS   #C49430  → navegación, flujos, relaciones, transiciones
+  CUERPO ESTRELLA #2A1A4A  → fondo profundo, contenedor, estructura
+  LAVANDA MEDIA   #9B7FCC  → sub-estados, contexto secundario
+
+────────────────────────────────────────────────────────────────────────── */
+
+/* Nucleus glow — golden center element */
+.nucleus-glow {
+  box-shadow:
+    0 0 0 1px rgba(226,182,89,0.2),
+    0 0 12px rgba(226,182,89,0.3),
+    0 0 28px rgba(226,182,89,0.12),
+    inset 0 1px 0 rgba(255,255,255,0.15);
+}
+
+/* Node style — lavender pearl */
+.node-lav {
+  background: radial-gradient(circle at 35% 30%, #F2ECFF 0%, #D6BCFA 45%, #B099D4 100%);
+  box-shadow:
+    0 0 0 1px rgba(214,188,250,0.3),
+    0 0 8px rgba(214,188,250,0.2),
+    inset 0 1px 0 rgba(255,255,255,0.25);
+}
+
+/* Active node — brighter lavender, glowing */
+.node-lav-active {
+  background: radial-gradient(circle at 35% 30%, #FFFFFF 0%, #E2D4FF 35%, #C4A8F8 75%, #9B7FCC 100%);
+  box-shadow:
+    0 0 0 2px rgba(214,188,250,0.5),
+    0 0 14px rgba(182,146,255,0.35),
+    inset 0 1px 0 rgba(255,255,255,0.35);
+}
+
+/* Card — jewel surface */
+.jewel-card {
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(238,233,245,0.8);
+  box-shadow:
+    0 2px 16px rgba(42,26,74,0.04),
+    0 1px 0 rgba(255,255,255,0.9) inset,
+    0 -1px 0 rgba(214,188,250,0.08) inset;
+}
+
+/* Gold arc — connecting element */
+.arc-gold {
+  background: linear-gradient(90deg, rgba(226,182,89,0.15), rgba(226,182,89,0.6), rgba(226,182,89,0.15));
+}
+
+/* Capsule — organic nav item */
+.capsule {
+  border-radius: 999px;
+  padding: 8px 16px;
+  transition: all 0.2s cubic-bezier(0.16,1,0.3,1);
+}
+
+/* Gold priority ring */
+@keyframes nucleusPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(226,182,89,0); }
+  50%       { box-shadow: 0 0 0 6px rgba(226,182,89,0.15); }
+}
+.nucleus-pulse {
+  animation: nucleusPulse 3s ease-in-out infinite;
+}
+
+/* Node orbit animation */
+@keyframes nodeOrbit {
+  0%   { transform: rotate(0deg) translateX(8px) rotate(0deg); }
+  100% { transform: rotate(360deg) translateX(8px) rotate(-360deg); }
+}
+
+/* ─── NExUS Premium Entry Animations ─── */
+
+/* Logo: N lights up */
+@keyframes litN {
+  0%   { opacity: 0; filter: blur(4px); }
+  100% { opacity: 1; filter: blur(0); }
+}
+/* Logo: Ex lights up in gold */
+@keyframes litEx {
+  0%   { opacity: 0; filter: blur(4px) brightness(0.5); text-shadow: none; }
+  60%  { opacity: 1; filter: blur(0) brightness(1.2); text-shadow: 0 0 20px rgba(226,182,89,0.9), 0 0 40px rgba(226,182,89,0.5); }
+  100% { opacity: 1; filter: blur(0) brightness(1); text-shadow: 0 0 12px rgba(226,182,89,0.5); }
+}
+/* Logo: US lights up */
+@keyframes litUS {
+  0%   { opacity: 0; filter: blur(4px); }
+  100% { opacity: 1; filter: blur(0); }
+}
+
+.logo-N  { animation: litN  0.4s cubic-bezier(0.16,1,0.3,1) 0.1s both; }
+.logo-Ex { animation: litEx 0.6s cubic-bezier(0.16,1,0.3,1) 0.45s both; }
+.logo-US { animation: litUS 0.4s cubic-bezier(0.16,1,0.3,1) 0.9s both; }
+
+/* Welcome screen elements */
+@keyframes fadeUpPremium {
+  0%   { opacity: 0; transform: translateY(24px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeInPremium {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* Gold shimmer for buttons */
+@keyframes goldShimmer {
+  0%   { background-position: -300px 0; }
+  100% { background-position: 300px 0; }
+}
+
+/* Particle drift */
+@keyframes particleDrift {
+  0%   { transform: translateY(0) translateX(0); opacity: 0; }
+  20%  { opacity: 0.6; }
+  100% { transform: translateY(-80px) translateX(20px); opacity: 0; }
+}
+@keyframes particleDrift2 {
+  0%   { transform: translateY(0) translateX(0); opacity: 0; }
+  20%  { opacity: 0.4; }
+  100% { transform: translateY(-60px) translateX(-30px); opacity: 0; }
+}
+
+/* Auth form entry */
+@keyframes formSlideUp {
+  0%   { opacity: 0; transform: translateY(40px) scale(0.97); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Onboarding card stagger */
+@keyframes cardReveal {
+  0%   { opacity: 0; transform: translateX(-20px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
+/* Animate in utility */
+.animate-fade-up {
+  animation: fadeUpPremium 0.7s cubic-bezier(0.16,1,0.3,1) both;
+}
+.animate-fade-in {
+  animation: fadeInPremium 0.5s ease-out both;
+}
+.animate-form-up {
+  animation: formSlideUp 0.5s cubic-bezier(0.16,1,0.3,1) both;
+}
+
+/* NExUS Black surface tokens */
+.nexus-surface {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.nexus-surface-md {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.09);
+}
+
+/* Premium input dark */
+.input-dark {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.09);
+  color: #F5F3F8;
+  transition: border-color 0.2s ease;
+}
+.input-dark:focus {
+  border-color: rgba(226,182,89,0.5);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(226,182,89,0.08);
+}
+.input-dark::placeholder {
+  color: rgba(245,243,248,0.3);
+}
+
+/* Gold CTA button */
+.btn-gold {
+  background: linear-gradient(135deg, #E2B659 0%, #FFB84D 50%, #E2B659 100%);
+  background-size: 300px 100%;
+  color: #1A0F30;
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+.btn-gold:hover {
+  animation: goldShimmer 1.5s linear infinite;
+  box-shadow: 0 4px 20px rgba(226,182,89,0.4);
+}
+.btn-gold:active {
+  transform: scale(0.98);
+}
+
+/* Ghost button */
+.btn-ghost-dark {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(245,243,248,0.85);
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+.btn-ghost-dark:hover {
+  border-color: rgba(226,182,89,0.35);
+  color: #F5F3F8;
+  background: rgba(226,182,89,0.04);
+}
+.btn-ghost-dark:active {
+  transform: scale(0.98);
+}
+
+/* ─── Global Focus States ─── */
+:focus-visible {
+  outline: 2px solid rgba(226,182,89,0.7);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(226,182,89,0.35);
+}
+
+/* ─── Disabled State ─── */
+button:disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+  pointer-events: none;
+}
