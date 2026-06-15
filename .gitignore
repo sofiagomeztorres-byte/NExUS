@@ -33,3 +33,9 @@ yarn-error.log*
 
 # OS
 Thumbs.db
+
+# TypeScript build cache
+tsconfig.tsbuildinfo
+
+# Claude Code local config
+.claude/settings.local.json
