@@ -47,43 +47,47 @@ export function AuthScreen({ mode, onToggleMode, onSuccess, onBack }: AuthScreen
       if (password.length < 6) { setError('La contraseña debe tener al menos 6 caracteres.'); setLoading(false); return }
       if (password !== confirmPassword) { setError('Las contraseñas no coinciden.'); setLoading(false); return }
 
-      const { data, error: signUpError } = await supabase.auth.signUp({
+      const { error: signUpError } = await supabase.auth.signUp({
         email: email.toLowerCase().trim(),
         password,
         options: { data: { name: name.trim() } },
       })
 
-      if (signUpError) {
-        if (signUpError.message.includes('already registered')) {
-          setError('Ya existe una cuenta con ese correo. Inicia sesión.')
-        } else {
-          setError(signUpError.message)
-        }
+      if (signUpError && !signUpError.message.includes('already registered')) {
+        setError(signUpError.message)
         setLoading(false)
         return
       }
 
-      if (!data.session) {
-        // No session returned — try auto-login (works when email confirmation is OFF)
-        const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
-          email: email.toLowerCase().trim(),
-          password,
-        })
+      // Always attempt sign-in immediately after signup.
+      // When email confirmation is OFF, this succeeds and goes straight to onboarding.
+      // When email confirmation is ON, this fails with "Email not confirmed" and we show the screen.
+      const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+        email: email.toLowerCase().trim(),
+        password,
+      })
 
-        if (signInError || !signInData.session) {
-          // Email confirmation IS required — show confirmation screen
+      if (signInError) {
+        const isUnconfirmed = signInError.message.toLowerCase().includes('email not confirmed')
+          || signInError.message.toLowerCase().includes('email_not_confirmed')
+        if (isUnconfirmed) {
           setLoading(false)
           setConfirmationSent(true)
           return
         }
-
+        setError(signInError.message)
         setLoading(false)
-        onSuccess(name.trim(), email.toLowerCase().trim(), signInData.user!.id)
+        return
+      }
+
+      if (!signInData.session) {
+        setLoading(false)
+        setConfirmationSent(true)
         return
       }
 
       setLoading(false)
-      onSuccess(name.trim(), email.toLowerCase().trim(), data.user!.id)
+      onSuccess(name.trim(), email.toLowerCase().trim(), signInData.user!.id)
 
     } else {
       const { data, error: signInError } = await supabase.auth.signInWithPassword({
