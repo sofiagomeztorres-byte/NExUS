@@ -64,9 +64,21 @@ export function AuthScreen({ mode, onToggleMode, onSuccess, onBack }: AuthScreen
       }
 
       if (!data.session) {
-        // Email confirmation required — Supabase dashboard setting
+        // No session returned — try auto-login (works when email confirmation is OFF)
+        const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+          email: email.toLowerCase().trim(),
+          password,
+        })
+
+        if (signInError || !signInData.session) {
+          // Email confirmation IS required — show confirmation screen
+          setLoading(false)
+          setConfirmationSent(true)
+          return
+        }
+
         setLoading(false)
-        setConfirmationSent(true)
+        onSuccess(name.trim(), email.toLowerCase().trim(), signInData.user!.id)
         return
       }
 
