@@ -208,7 +208,7 @@ export function BrandIntroOnboarding({ onComplete }: BrandIntroOnboardingProps) 
                 fontSize: 20, flexShrink: 0,
               }}>✦</div>
               <div>
-                <p style={{ fontSize: 14, fontWeight: 600, color: '#F5F3F8', marginBottom: 2 }}>Paola</p>
+                <p style={{ fontSize: 14, fontWeight: 600, color: '#F5F3F8', marginBottom: 2 }}>Sofia Gomez</p>
                 <p style={{ fontSize: 12, color: 'rgba(245,243,248,0.35)' }}>Fundadora de NExUS</p>
               </div>
             </div>
