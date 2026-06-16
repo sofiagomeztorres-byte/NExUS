@@ -60,7 +60,6 @@ interface NexusContextType {
 }
 
 // ─── Row → App type mappers ───────────────────────────────────────────────────
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Row = Record<string, any>
 
 function rowToBrand(r: Row): Brand {
