@@ -47,16 +47,21 @@ export function AuthScreen({ mode, onToggleMode, onSuccess, onBack }: AuthScreen
       if (password.length < 6) { setError('La contraseña debe tener al menos 6 caracteres.'); setLoading(false); return }
       if (password !== confirmPassword) { setError('Las contraseñas no coinciden.'); setLoading(false); return }
 
-      const { error: signUpError } = await supabase.auth.signUp({
+      const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
         email: email.toLowerCase().trim(),
         password,
         options: { data: { name: name.trim() } },
       })
 
-      if (signUpError && !signUpError.message.includes('already registered')) {
-        setError(signUpError.message)
-        setLoading(false)
-        return
+      if (signUpError) {
+        const isAlreadyRegistered = signUpError.message.includes('already registered')
+        if (!isAlreadyRegistered) {
+          console.error('[NExUS] Signup error:', signUpError.code, signUpError.message)
+          setError(signUpError.message)
+          setLoading(false)
+          return
+        }
+        console.warn('[NExUS] Account already exists, attempting login')
       }
 
       // Always attempt sign-in immediately after signup.
@@ -68,6 +73,7 @@ export function AuthScreen({ mode, onToggleMode, onSuccess, onBack }: AuthScreen
       })
 
       if (signInError) {
+        console.error('[NExUS] Login after signup error:', signInError.code, signInError.message)
         const isUnconfirmed = signInError.message.toLowerCase().includes('email not confirmed')
           || signInError.message.toLowerCase().includes('email_not_confirmed')
         if (isUnconfirmed) {
@@ -75,7 +81,7 @@ export function AuthScreen({ mode, onToggleMode, onSuccess, onBack }: AuthScreen
           setConfirmationSent(true)
           return
         }
-        setError(signInError.message)
+        setError(`Error en inicio de sesión: ${signInError.message}`)
         setLoading(false)
         return
       }
