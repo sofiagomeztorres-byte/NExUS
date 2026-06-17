@@ -33,7 +33,7 @@ type ProfileSnap = {
 function resolveAuthenticatedView(u: ProfileSnap): AppView {
   if (!u.hasSeenBrandIntro) return 'brand-intro'
   if (!u.onboardingComplete) return 'onboarding'
-  if (u.rememberLastBrand && u.currentBrandId) return 'dashboard'
+  if (u.currentBrandId) return 'dashboard'
   return 'brand-select'
 }
 
@@ -132,7 +132,7 @@ export default function Home() {
   if (view === 'onboarding') {
     return (
       <OnboardingFlow
-        onComplete={() => setView('brand-select')}
+        onComplete={() => setView(user.currentBrandId ? 'dashboard' : 'brand-setup')}
       />
     )
   }

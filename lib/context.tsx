@@ -307,18 +307,21 @@ export function NexusProvider({ children }: { children: React.ReactNode }) {
   // ── Sync profile fields to Supabase ──
   function syncProfile(u: UserState) {
     if (!u.userId) return
-    supabase.from('profiles').upsert({
-      id: u.userId,
-      name: u.name,
-      email: u.email,
-      current_brand_id: u.currentBrandId || null,
-      onboarding_complete: u.onboardingComplete,
-      remember_last_brand: u.rememberLastBrand,
-      has_seen_brand_intro: u.hasSeenBrandIntro,
-      mi_dia_state: u.miDiaState,
-      updated_at: new Date().toISOString(),
-    }).then(({ error }) => {
-      if (error) console.error('[NExUS] Profile sync error:', error.message)
+    supabase.from('profiles').upsert(
+      {
+        id: u.userId,
+        name: u.name,
+        email: u.email,
+        current_brand_id: u.currentBrandId || null,
+        onboarding_complete: u.onboardingComplete,
+        remember_last_brand: u.rememberLastBrand,
+        has_seen_brand_intro: u.hasSeenBrandIntro,
+        mi_dia_state: u.miDiaState,
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: 'id' }
+    ).then(({ error }) => {
+      if (error) console.error('[NExUS] Profile sync error:', error.code, error.message)
     })
   }
 
@@ -327,8 +330,8 @@ export function NexusProvider({ children }: { children: React.ReactNode }) {
     userIdRef.current = userId
     try {
       const [
-        { data: profile },
-        { data: brandsData },
+        { data: profile, error: profileErr },
+        { data: brandsData, error: brandsErr },
         { data: tasksData },
         { data: eventsData },
         { data: schedulesData },
@@ -347,6 +350,22 @@ export function NexusProvider({ children }: { children: React.ReactNode }) {
         supabase.from('goals').select('*').eq('user_id', userId),
         supabase.from('analytics_entries').select('*').eq('user_id', userId),
       ])
+
+      if (profileErr) console.error('[NExUS] Profile load error:', profileErr.code, profileErr.message)
+      if (brandsErr) console.error('[NExUS] Brands load error:', brandsErr.code, brandsErr.message)
+
+      // If profile row doesn't exist yet (trigger may have failed), create it now
+      if (!profile && profileErr?.code === 'PGRST116') {
+        const { data: sessionData } = await supabase.auth.getSession()
+        const meta = sessionData.session?.user?.user_metadata ?? {}
+        const email = sessionData.session?.user?.email ?? ''
+        const { error: createErr } = await supabase.from('profiles').upsert({
+          id: userId,
+          name: meta.name ?? '',
+          email,
+        })
+        if (createErr) console.error('[NExUS] Profile create error:', createErr.message)
+      }
 
       const brands = mergeBrands((brandsData ?? []).map(rowToBrand))
 

@@ -146,8 +146,7 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
   }
 
   const handleComplete = () => {
-    // Mark onboarding done, clear any auto-selected brand, then hand off to page.tsx
-    updateUserState({ onboardingComplete: true, currentBrandId: '' })
+    updateUserState({ onboardingComplete: true })
     onComplete()
   }
 
