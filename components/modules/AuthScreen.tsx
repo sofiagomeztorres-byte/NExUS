@@ -53,20 +53,24 @@ export function AuthScreen({ mode, onToggleMode, onSuccess, onBack }: AuthScreen
         options: { data: { name: name.trim() } },
       })
 
-      if (signUpError) {
-        const isAlreadyRegistered = signUpError.message.includes('already registered')
-        if (!isAlreadyRegistered) {
-          console.error('[NExUS] Signup error:', signUpError.code, signUpError.message)
-          setError(signUpError.message)
-          setLoading(false)
-          return
-        }
-        console.warn('[NExUS] Account already exists, attempting login')
+      if (signUpError && !signUpError.message.includes('already registered')) {
+        console.error('[NExUS] Signup error:', signUpError.code, signUpError.message)
+        setError(signUpError.message)
+        setLoading(false)
+        return
       }
 
-      // Always attempt sign-in immediately after signup.
-      // When email confirmation is OFF, this succeeds and goes straight to onboarding.
-      // When email confirmation is ON, this fails with "Email not confirmed" and we show the screen.
+      // If signup returned a session directly (email confirmation OFF), use it
+      if (signUpData?.session) {
+        console.log('[NExUS] Signup successful with session')
+        setLoading(false)
+        onSuccess(name.trim(), email.toLowerCase().trim(), signUpData.user!.id)
+        return
+      }
+
+      // If signup was successful but no session (email confirmation ON or already registered),
+      // attempt sign-in. This will fail with "Email not confirmed" if confirmation is ON.
+      console.log('[NExUS] No session from signup, attempting login')
       const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
         email: email.toLowerCase().trim(),
         password,
@@ -81,7 +85,7 @@ export function AuthScreen({ mode, onToggleMode, onSuccess, onBack }: AuthScreen
           setConfirmationSent(true)
           return
         }
-        setError(`Error en inicio de sesión: ${signInError.message}`)
+        setError(signInError.message)
         setLoading(false)
         return
       }
